@@ -8,24 +8,56 @@
 #include<jni.h>
 #include"../inc/log.h"
 #include <stdio.h>
+#include <string>
+
+using namespace std;
 
 jint init(JavaVM *jvm, jstring url){
-    LOGI("nativeInit ");
-
-//    JNI_CreateJavaVM
+    FUNCTION_IN();
+    FUNCTION_OUT();
     return 0;
 }
 
 int nativeSetSurface(JavaVM *jvm, jobject surface){
-    LOGI("set surface");
+    FUNCTION_IN();
+    FUNCTION_OUT();
     return 0;
 }
+
+int setDataSource(JavaVM *jvm, jstring url){
+    FUNCTION_IN();
+    FUNCTION_OUT();
+}
+
+int start(){
+    FUNCTION_IN();
+    FUNCTION_OUT();
+}
+
+int stop(){
+    FUNCTION_IN();
+    FUNCTION_OUT();
+}
+
 static JNINativeMethod sMethod[] = {
         {"nativeInit", "(Ljava/lang/String;)I", (void*)init},
         {"nativeSetSurface", "(Ljava/lang/Object;)I",(void*)nativeSetSurface}
+
 };
 
+void MediaPlayerInit(JNIEnv* env){
+    FUNCTION_IN();
+    static jclass mediaCls = env->FindClass("android/media/MediaPlayer");
+    static jmethodID setDataSourceId = env->GetMethodID(mediaCls, "setDataSource", "(Ljava/io/FileDescriptor;JJ)V");
+    static jmethodID setDisplayId = env->GetMethodID(mediaCls, "setDisplay", "(Landroid/view/SurfaceHolder;)V");
+    static jmethodID prepareId = env->GetMethodID(mediaCls, "prepare", "()V");
+    static jmethodID stopId = env->GetMethodID(mediaCls, "stop", "()V");
+    FUNCTION_OUT();
+}
+
 JNIEXPORT int JNI_OnLoad(JavaVM* vm, void* reserved) {
+    FUNCTION_IN();
+
     JNIEnv* env = NULL;
     jint result = -1;
 
@@ -45,5 +77,11 @@ JNIEXPORT int JNI_OnLoad(JavaVM* vm, void* reserved) {
 
     GetMethod("medialibrary/Medialibrary", sMethod);
 
+    MediaPlayerInit(env);
+
+    FUNCTION_OUT();
+
     return JNI_VERSION_1_6;
 }
+
+
