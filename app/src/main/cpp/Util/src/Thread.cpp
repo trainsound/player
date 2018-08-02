@@ -3,22 +3,28 @@
 //
 
 #include "../inc/Thread.h"
+#include "../inc/log.h"
 
-void* pthreadCreate(void* arg){
+static void* pthreadCreate(void* arg){
     Thread *thread = (Thread*)arg;
     thread->run();
+    return NULL; // must return void pointer
 }
 
 Thread::Thread(void* arg){
+    FUNCTION_IN();
     this->runFlag = true;
-    if(!pthread_create(&(this->thread), NULL, pthreadCreate, arg)){
+    //if to create, to save id in thread that return value 0.
+    if(pthread_create(&(this->thread), NULL, pthreadCreate, arg) < 0){
         //exit
         this->runFlag = false;
     }
+    FUNCTION_OUT();
 }
 
 Thread::~Thread(){
-    
+    FUNCTION_IN();
+    FUNCTION_OUT();
 }
 
 bool Thread::getRunnableFlag(){
@@ -26,9 +32,8 @@ bool Thread::getRunnableFlag(){
 }
 
 int Thread::threadStop(){
+    FUNCTION_IN();
     this->runFlag = false;
-}
-
-void Thread::run(){
-
+    FUNCTION_OUT();
+    return 0;
 }

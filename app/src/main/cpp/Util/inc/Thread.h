@@ -14,7 +14,7 @@ class Thread {
     public :
         Thread(void *arg);
         ~Thread();
-        virtual void run();
+        virtual void run() = 0;
 
         bool getRunnableFlag();
         int threadStop();

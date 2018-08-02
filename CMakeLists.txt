@@ -19,11 +19,14 @@ add_library( # Specifies the name of the library.
              # Sets the library as a shared library.
              SHARED
              # Provides a relative path to your source file(s).
-             app/src/main/cpp/Util/src/medialibrary.cpp
+             app/src/main/cpp/jni_interface.cpp
+             app/src/main/cpp/media/src/BasePlayer.cpp
+             app/src/main/cpp/media/src/AndroidMediaPlayer.cpp
              app/src/main/cpp/Util/src/Thread.cpp)
 
 # Specifies a path to native header files.
 #include_directories(app/src/main/cpp/Util/inc/)
+#include_directories(app/src/main/cpp/media/inc/)
 
 find_library( # Defines the name of the path variable that stores the
               # location of the NDK library.

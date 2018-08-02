@@ -6,54 +6,56 @@
 //
 
 #include<jni.h>
-#include"../inc/log.h"
+#include"Util/inc/log.h"
+#include "media/inc/BasePlayer.h"
+#include "media/inc/AndroidMediaPlayer.h"
 #include <stdio.h>
 #include <string>
 
 using namespace std;
 
-jint init(JavaVM *jvm, jstring url){
-    FUNCTION_IN();
-    FUNCTION_OUT();
-    return 0;
-}
-
-int nativeSetSurface(JavaVM *jvm, jobject surface){
-    FUNCTION_IN();
-    FUNCTION_OUT();
-    return 0;
-}
+BasePlayer *player = NULL;
 
 int setDataSource(JavaVM *jvm, jstring url){
     FUNCTION_IN();
+    LOGE("setDataSource", url);
+    player = new AndroidMediaPlayer();
+
+//    BasePlayer *player = new AndroidMediaPlayer();
+//    player->play();
+
     FUNCTION_OUT();
+
+    return 0;
+}
+
+int stop(){
+    FUNCTION_IN();
+player->stop();
+    FUNCTION_OUT();
+    return 0;
+}
+
+int play(){
+    FUNCTION_IN();
+    FUNCTION_OUT();
+    return 0;
 }
 
 int start(){
     FUNCTION_IN();
     FUNCTION_OUT();
+
+    return 0;
 }
 
-int stop(){
-    FUNCTION_IN();
-    FUNCTION_OUT();
-}
 
 static JNINativeMethod sMethod[] = {
-        {"nativeInit", "(Ljava/lang/String;)I", (void*)init},
-        {"nativeSetSurface", "(Ljava/lang/Object;)I",(void*)nativeSetSurface}
+        {"nativeSetDataSource", "(Ljava/lang/String;)I", (void*)setDataSource},
+        {"nativePlay", "()I",(void*)play},
+        {"nativeStop", "()I",(void*)stop}
 
 };
-
-void MediaPlayerInit(JNIEnv* env){
-    FUNCTION_IN();
-    static jclass mediaCls = env->FindClass("android/media/MediaPlayer");
-    static jmethodID setDataSourceId = env->GetMethodID(mediaCls, "setDataSource", "(Ljava/io/FileDescriptor;JJ)V");
-    static jmethodID setDisplayId = env->GetMethodID(mediaCls, "setDisplay", "(Landroid/view/SurfaceHolder;)V");
-    static jmethodID prepareId = env->GetMethodID(mediaCls, "prepare", "()V");
-    static jmethodID stopId = env->GetMethodID(mediaCls, "stop", "()V");
-    FUNCTION_OUT();
-}
 
 JNIEXPORT int JNI_OnLoad(JavaVM* vm, void* reserved) {
     FUNCTION_IN();
@@ -71,13 +73,13 @@ JNIEXPORT int JNI_OnLoad(JavaVM* vm, void* reserved) {
         if(clazz == NULL){ \
             return -1; \
         } \
-        if(env->RegisterNatives(clazz, sMethod, 2) < 0){ \
+        if(env->RegisterNatives(clazz, sMethod, 3) < 0){ \
             return -1; \
         } \
 
     GetMethod("medialibrary/Medialibrary", sMethod);
 
-    MediaPlayerInit(env);
+//    MediaPlayerInit(env);
 
     FUNCTION_OUT();
 

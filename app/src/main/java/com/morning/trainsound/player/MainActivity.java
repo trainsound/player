@@ -13,6 +13,8 @@ import medialibrary.Medialibrary;
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
     private Button start, stop;
     private SurfaceView surface;
+    private Medialibrary medialibrary;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +23,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         start = (Button)findViewById(R.id.btnStart);
         stop = (Button)findViewById(R.id.btnStop);
         surface = (SurfaceView)findViewById(R.id.surfaceID);
+        medialibrary = new Medialibrary();
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Medialibrary.nativeInit("testUrl");
+                medialibrary.nativeSetDataSource("test url");
             }
         });
 
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
             @Override
             public void onClick(View v) {
-
+                medialibrary.nativeStop();
             }
         });
     }
